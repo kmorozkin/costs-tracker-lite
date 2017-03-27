@@ -1,11 +1,19 @@
 (ns costs-tracker-lite.core
-  (:require [compojure.core :refer :all]
+  (:require [clojure.java.io :as io]
+            [compojure.core :refer :all]
             [compojure.route :as route]
-            [ring.adapter.jetty :refer [run-jetty]]))
+            [ring.adapter.jetty :refer [run-jetty]])
+  (:gen-class))
+
+(defn read-resource
+  [resource]
+  (-> resource io/resource slurp))
 
 (defroutes
   ring-handler
-  (GET "/" [] "Hello world!")
+  (GET "/" [] (read-resource "index.html"))
   (route/not-found "Page not found!"))
 
-(run-jetty ring-handler {:port 8081})
+(defn -main
+  []
+  (run-jetty ring-handler {:port 8080}))
