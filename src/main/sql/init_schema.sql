@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS Spendings;
+
+CREATE TABLE Spendings(
+	"id" SERIAL PRIMARY KEY,
+	"user" VARCHAR(20) NOT NULL,
+	"item" VARCHAR(50) NOT NULL,
+	"date" DATE NOT NULL);
+
+DROP TABLE IF EXISTS Tags;
+
+CREATE TABLE Tags(
+	"id" SERIAL PRIMARY KEY,
+	"name" VARCHAR(20) NOT NULL);
+
+DROP TABLE IF EXISTS SpendingTags;
+
+CREATE TABLE SpendingTags(
+	"spendingId" INTEGER REFERENCES Spendings(id),
+	"tagId" INTEGER REFERENCES Tags(id) );
