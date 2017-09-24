@@ -1,11 +1,10 @@
 (ns costs-tracker-lite.core
-  (:import com.mchange.v2.c3p0.ComboPooledDataSource)
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.adapter.jetty :refer [run-jetty]]
             [costs-tracker-lite.resources :refer [read-resource!]]
-            [jdbc.pool.c3p0 :as c3p0]
             [clojure.java.jdbc :as jdbc])
+  (:import (com.mchange.v2.c3p0 ComboPooledDataSource))
   (:gen-class))
 
 (def spec
@@ -15,11 +14,27 @@
      :user "test"
      :password "test"})
 
+(defn spec->pool
+  [spec]
+  (let [datasource (ComboPooledDataSource.)]
+    (doto datasource
+      (.setDriverClass (:classname spec))
+      (.setJdbcUrl (str "jdbc:" (:subprotocol spec) ":" (:subname spec)))
+      (.setUser (:user spec))
+      (.setPassword (:password spec))
+      ;; expire excess connections after 30 minutes of inactivity:
+      (.setMaxIdleTimeExcessConnections (* 30 60))
+      ;; expire connections after 3 hours of inactivity:
+      (.setMaxIdleTime (* 3 60 60)))
+    {:datasource datasource}))
+
+(def c3p0 (delay (spec->pool spec)))
+
 (defroutes
   ring-handler
   (GET "/" [] (read-resource! "index.html"))
   (GET "/test" []
-    (jdbc/query spec ["SELECT * FROM Tags"]))
+    (jdbc/query @c3p0 ["SELECT * FROM Tags"]))
   (GET "/:path{.*\\.js}" [path] (println path) (read-resource! path))
   (route/not-found "Page not found!"))
 

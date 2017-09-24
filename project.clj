@@ -14,7 +14,6 @@
   :source-paths ["src/main/clojure" "src/main/html" "src/main/css" "src/main/sql"]
   :resource-paths ["src/main/resources" "target/public"]
   :test-paths ["src/test/clojure" "src/test/html" "src/test/css"]
-  :clean-targets ^{:protect false} [:target-path "main.js"]
   :main costs-tracker-lite.core
   :aot [costs-tracker-lite.core]
 
