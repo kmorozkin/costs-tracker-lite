@@ -5,8 +5,8 @@
             :url  "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [org.clojure/clojurescript "1.9.495"]
-                 [ring "1.6.0-RC1"]
-                 [compojure "1.5.2"]
+                 [ring "1.6.2"]
+                 [compojure "1.6.0"]
                  [org.postgresql/postgresql "42.1.4"]
                  [org.clojure/java.jdbc "0.7.0"]
                  [com.mchange/c3p0 "0.9.5.2"]]
