@@ -15,5 +15,5 @@ CREATE TABLE Tags(
 ALTER TABLE Tags ADD UNIQUE (name);
 
 CREATE TABLE SpendingTags(
-	"spendingId" INTEGER REFERENCES Spendings(id),
-	"tagId" INTEGER REFERENCES Tags(id) );
+	"spendingid" INTEGER REFERENCES Spendings(id),
+	"tagid" INTEGER REFERENCES Tags(id) );
